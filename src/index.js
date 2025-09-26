@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import authRouter from './router/authRouter.js';
+import AuthRouter from './router/AuthRouter.js';
 dotenv.config();
 
 const port = process.env.PORT || process.env.LOCAL_PORT;
@@ -12,7 +12,7 @@ app.get('/', (req, res)=>{
     res.send('get req');
 });
 
-app.use('/auth', authRouter);
+app.use('/auth', AuthRouter);
 // app.post();
 
 
