@@ -36,3 +36,10 @@ export async function signup(req, res){
 
     res.json(user);
 }
+
+export async function logout(req, res){
+    res.clearCookie('access_token');
+    res.clearCookie('refresh_token');
+
+    res.json( response.create(true, "Logout Success") );
+}
