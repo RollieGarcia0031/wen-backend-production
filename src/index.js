@@ -8,7 +8,9 @@ const app = express();
 
 /*       APP ROUTES       */
 
-// app.get();
+app.get('/', (req, res)=>{
+    res.send('get req');
+});
 // app.post();
 
 
