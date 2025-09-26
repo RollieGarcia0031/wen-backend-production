@@ -43,3 +43,21 @@ export async function logout(req, res){
 
     res.json( response.create(true, "Logout Success") );
 }
+
+export async function refresh(req, res){
+    const refresh_token = req.cookies.refresh_token
+    
+    if (!refresh_token) return res.status(401).json({ error: 'No refresh token' })
+
+    const { data, error } = await supabase.auth.refreshSession({ refresh_token })
+
+    if (error) {
+        return res.status(401).json(
+            response.create(false, error.message, null)
+        );
+    }
+
+    AuthService.setAuthCookies(res, data.session)
+
+    res.json( response.create(true, "refresh success", data.user) );
+}
