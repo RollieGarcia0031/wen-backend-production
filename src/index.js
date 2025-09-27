@@ -23,6 +23,8 @@ app.get('/', (req, res)=>{
 });
 
 app.use('/auth', AuthRouter);
+
+app.use('/professor', ProfessorRouter);
 // app.post();
 
 
