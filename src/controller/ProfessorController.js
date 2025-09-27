@@ -24,3 +24,11 @@ export function getAvailability(req, res){
 export function deleteAvailability(req, res){
 
 }
+
+export function searchByInfo(req, res){
+
+}
+
+export function searchAvailabilityById(req, res){
+    
+}
