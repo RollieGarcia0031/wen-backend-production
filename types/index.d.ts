@@ -1,0 +1,1 @@
+/// <reference path="./UserService.d.ts" />
