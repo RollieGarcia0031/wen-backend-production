@@ -2,6 +2,7 @@ import AuthService from "../services/AuthService";
 import supabase from '../config/supabase'
 import response from '../lib/response'
 
+/** @type {import('../../types/AuthController').login} */
 export async function login(req, res){
     const { email, password } = req.body;
 
@@ -20,6 +21,7 @@ export async function login(req, res){
     );
 }
 
+/** @type {import("../../types/AuthController").signup}*/
 export async function signup(req, res){
     const { email, password } = req.body;
     const { data, error } = await supabase.auth.signUp({email, password});
@@ -37,6 +39,7 @@ export async function signup(req, res){
     res.json(user);
 }
 
+/** @type {import("../../types/AuthController").logout} */
 export async function logout(req, res){
     res.clearCookie('access_token');
     res.clearCookie('refresh_token');
@@ -44,6 +47,7 @@ export async function logout(req, res){
     res.json( response.create(true, "Logout Success") );
 }
 
+/** @type {import("../../types/AuthController").refresh} */
 export async function refresh(req, res){
     const refresh_token = req.cookies.refresh_token
     
