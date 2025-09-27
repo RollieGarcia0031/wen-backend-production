@@ -1,3 +1,4 @@
+//@ts-check
 import response from "../lib/response.js";
 import supabase from "../config/supabase.js";
 import AppointmentService from "../services/AppointmentService.js";
