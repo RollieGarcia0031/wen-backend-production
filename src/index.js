@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import AuthRouter from './router/AuthRouter.js';
 import ProfessorRouter from './router/ProfessorRouter.js'
 import SearchRouter from './router/SearchRouter.js';
+import AppointmentRouter from './router/AppointmentRouter.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
@@ -27,6 +28,8 @@ app.get('/', (req, res)=>{
 app.use('/auth', AuthRouter);
 
 app.use('/professor', ProfessorRouter);
+
+app.use('/appointment', AppointmentRouter);
 
 app.use('/search', SearchRouter);
 // app.post();

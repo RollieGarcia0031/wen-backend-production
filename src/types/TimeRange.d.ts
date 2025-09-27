@@ -1,0 +1,1 @@
+export type TimeRange = 'past' | 'today' | 'tomorrow' | 'future';

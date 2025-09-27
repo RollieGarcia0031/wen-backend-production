@@ -1,0 +1,1 @@
+export type AppointmentStatus = 'pending' | 'confirmed';
