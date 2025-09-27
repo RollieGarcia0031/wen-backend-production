@@ -2,7 +2,10 @@ import AuthService from "../services/AuthService";
 import supabase from '../config/supabase'
 import response from '../lib/response'
 
-/** @type {import('../../types/AuthController').login} */
+/** 
+ * Used to login users
+ * @type {RouterHandler}
+ */
 export async function login(req, res){
     const { email, password } = req.body;
 
@@ -21,7 +24,12 @@ export async function login(req, res){
     );
 }
 
-/** @type {import("../../types/AuthController").signup}*/
+/**
+ * Allows user to create an account
+ * 
+ * Uses supabase to handle auth
+ * @type {RouterHandler}
+ */
 export async function signup(req, res){
     const { email, password } = req.body;
     const { data, error } = await supabase.auth.signUp({email, password});
@@ -39,7 +47,10 @@ export async function signup(req, res){
     res.json(user);
 }
 
-/** @type {import("../../types/AuthController").logout} */
+/**
+ * Used to logout the current user, and clear the cookies of the session 
+ * @type {RouterHandler}
+ */
 export async function logout(req, res){
     res.clearCookie('access_token');
     res.clearCookie('refresh_token');
@@ -47,7 +58,13 @@ export async function logout(req, res){
     res.json( response.create(true, "Logout Success") );
 }
 
-/** @type {import("../../types/AuthController").refresh} */
+/** 
+ * Used to refresh the tokens of user session
+ * 
+ * This route shall be access as primary way to handle 401 errors to allow
+ * users to have a persistent authentication
+ * @type {RouterHandler}
+ */
 export async function refresh(req, res){
     const refresh_token = req.cookies.refresh_token
     
@@ -65,3 +82,7 @@ export async function refresh(req, res){
 
     res.json( response.create(true, "refresh success", data.user) );
 }
+
+/**
+ * @typedef {import("../../types/RouterHandler").CustomRouterHandler} RouterHandler
+ */
