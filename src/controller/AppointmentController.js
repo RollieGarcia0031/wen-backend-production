@@ -1,6 +1,6 @@
-import response from "../lib/response";
-import supabase from "../config/supabase";
-import AppointmentService from "../services/AppointmentService";
+import response from "../lib/response.js";
+import supabase from "../config/supabase.js";
+import AppointmentService from "../services/AppointmentService.js";
 
 /**
  * This can be accessed by logged user with student role to send appointments
@@ -78,7 +78,7 @@ export async function getCurrentlyBooked(req, res){
  * - values of time_range: 'past' | 'today' | 'tomorrow' | 'future'
  * @type {RouterHandler}
  */
-export function getCountByTimeRange(req, res){
+export async function getCountByTimeRange(req, res){
     const { timeRange } = req.body;
 
     const list = await

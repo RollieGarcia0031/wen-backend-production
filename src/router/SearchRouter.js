@@ -1,5 +1,5 @@
 import express from 'express';
-import * as Proffesor from '../controller/ProfessorController'
+import * as Proffesor from '../controller/ProfessorController.js'
 
 const SearchRouter = express.Router();
 

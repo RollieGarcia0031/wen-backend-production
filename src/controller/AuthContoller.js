@@ -1,6 +1,6 @@
-import AuthService from "../services/AuthService";
-import supabase from '../config/supabase'
-import response from '../lib/response'
+import AuthService from "../services/AuthService.js";
+import supabase from '../config/supabase.js'
+import response from '../lib/response.js'
 
 /** 
  * Used to login users

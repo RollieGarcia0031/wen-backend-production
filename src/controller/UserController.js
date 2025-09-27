@@ -1,4 +1,4 @@
-import User from '../services/UserService'
+import User from '../services/UserService.js'
 
 /**
  * Returns the email, name, and id of the currently logged user

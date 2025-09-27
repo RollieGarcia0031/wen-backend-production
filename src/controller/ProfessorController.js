@@ -1,7 +1,7 @@
-import supabase from '../config/supabase';
-import response from '../lib/response';
+import supabase from '../config/supabase.js';
+import response from '../lib/response.js';
 
-export function createProfile(req, req){
+export function createProfile(req, res){
 
 }
 

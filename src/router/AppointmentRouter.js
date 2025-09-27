@@ -7,7 +7,7 @@ import {
     getList,
     send,
     updateMessage
-} from '../controller/AppointmentController';
+} from '../controller/AppointmentController.js';
 
 const AppointmentRouter = express.Router();
 
