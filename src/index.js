@@ -4,6 +4,7 @@ import AuthRouter from './router/AuthRouter.js';
 import ProfessorRouter from './router/ProfessorRouter.js'
 import SearchRouter from './router/SearchRouter.js';
 import AppointmentRouter from './router/AppointmentRouter.js';
+import UserRouter from './router/UserRouter.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
@@ -32,6 +33,8 @@ app.use('/professor', ProfessorRouter);
 app.use('/appointment', AppointmentRouter);
 
 app.use('/search', SearchRouter);
+
+app.use('/user', UserRouter);
 // app.post();
 
 
