@@ -6,8 +6,10 @@ import AppointmentService from "../services/AppointmentService.js";
  * This can be accessed by logged user with student role to send appointments
  * to other user with professor role
  * @type { RouterHandler }
+ * @param {import("../../types/AppointmentController.d.ts").sendRequest} req
  */
 export function send(req, res){
+    const { availability_id, message, prof_id, time_stamp } = req.body;
 
 }
 
@@ -17,18 +19,20 @@ export function send(req, res){
  * - Users logged as students will be responded with their sent appointments
  * - Users logged as professor will be responded with list of received appointments  
  * @type {RouterHandler}
+ * @param {import("../../types/AppointmentController.d.ts").getListRequest} req
  */
 export function getList(req, res){
-
+    const {} = req.body;
 }
 
 /**
  * This is only accessible to users logged with role as a professor
  * It updates the appointment in the database, changing the field 'status' into 'confirmed' 
  * @type {RouterHandler}
+ * @param {import("../../types/AppointmentController.d.ts").acceptRequest} req
  */
 export function accept(req, res) {
-
+    const { id } = req.body;
 }
 
 /**
@@ -39,8 +43,10 @@ export function accept(req, res) {
  * - If the student_id of the requested appointment does not match with the uuid of
  * the logged user, it will throw an error
  * @type {RouterHandler}
+ * @param {import("../../types/AppointmentController.d.ts").updateMessageRequest} req
  */
 export function updateMessage(req, res){
+    const { id, message } = req.body;
 
 }
 
@@ -50,9 +56,10 @@ export function updateMessage(req, res){
  * - It throws error when the requested appointment id does not match the
  * student_id or professor_id of the logged user
  * @type {RouterHandler}
+ * @param {import("../../types/AppointmentController.d.ts").deleteByIdRequest} req
  */
 export function deleteById(req, res){
-
+    const { id } = req.body;
 }
 
 /**
@@ -63,8 +70,11 @@ export function deleteById(req, res){
  * with corresponding names, date, and  time
  * 
  * @type {RouterHandler}
+ * @param {import("../../types/AppointmentController.d.ts").getCurrentlyBookedRequest} req
  */
 export async function getCurrentlyBooked(req, res){
+    const {} = req.body;
+
     const list = await
         AppointmentService.getFilteredList('today','confirmed');
     
@@ -77,12 +87,13 @@ export async function getCurrentlyBooked(req, res){
  * categorized by the status
  * - values of time_range: 'past' | 'today' | 'tomorrow' | 'future'
  * @type {RouterHandler}
+ * @param {import("../../types/AppointmentController.d.ts").getCountByTimeRangeRequest} req
  */
 export async function getCountByTimeRange(req, res){
-    const { timeRange } = req.body;
+    const { time_range } = req.body;
 
     const list = await
-        AppointmentService.getCountByFilter(timeRange, null)
+        AppointmentService.getCountByFilter(time_range, null)
 }
 
 /** @typedef {import("../../types/RouterHandler").CustomRouterHandler} RouterHandler */
