@@ -57,7 +57,15 @@ export async function signup(req, res){
 
     if (session) AuthService.setAuthCookies(res, session);
 
-    res.json(user);
+    res.json(response.create(
+        true,
+        "Sucessful Signup",
+        {
+            id: user.id,
+            email: user.email,
+            name: user.user_metadata.name
+        }
+    ));
 }
 
 /**
