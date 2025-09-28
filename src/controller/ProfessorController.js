@@ -90,8 +90,47 @@ export function deleteProfile(req, res){
 
 }
 
-export function createAvailability(req, res){
+/**
+ * Used to create and save new availability for a current user
+ * 
+ * - Only allowed to users logged with a role as a professor
+ * 
+ * @param {*} req 
+ * @type {RouterHandler} 
+ */
+export async function createAvailability(req, res){
+    const { day_of_week, start, end } = req.body;
+    const { id } = req.user;
+    const role = req.user.user_metadata?.role || '';
 
+    const userIsProfessor = isProfessor(res, role);
+
+    if (!userIsProfessor) return; 
+
+    try {
+        const { data, error } = await supabase.from('availability')
+            .insert([{
+                user_id: id,
+                day_of_week,
+                start_time: start,
+                end_time: end
+            }])
+            .select('id')
+        ;
+
+        if (error) throw error;
+
+        res.status(201).json( response.create(
+            true,
+            "Availability added successfully",
+            {
+                id: data[0]
+            }
+        ) );
+
+    } catch (e) {
+        res.status(500).json( response.create(false, e.message, null) )
+    }
 }
 
 export function getAvailability(req, res){

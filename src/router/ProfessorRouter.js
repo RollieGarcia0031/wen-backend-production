@@ -8,7 +8,7 @@ router.post('/profile', requireAuth, createProfile);
 router.get('/profile', requireAuth, getProfile);
 router.delete('/profile', deleteProfile);
 
-router.post('/availability', createAvailability);
+router.post('/availability', requireAuth, createAvailability);
 router.get('/availability', getAvailability);
 router.delete('/availability', deleteAvailability);
 
