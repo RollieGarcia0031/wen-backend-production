@@ -1,7 +1,53 @@
 import supabase from '../config/supabase.js';
 import response from '../lib/response.js';
 
-export function createProfile(req, res){
+/**
+ * Allows users logged as professors to create a new profile
+ * that would represent the year and course that they are currently
+ * teaching
+ * 
+ * Each teacher can have multiple profiles, if they teach more than one
+ * section
+ * @param {import('../../types/ProfessorController.d.ts').createProfileRequest} req
+ * @param {import('express').Response} res
+ */
+export async function createProfile(req, res){
+    const { department, year } = req.body;
+    const { id } = req.user;
+    const role = req.user.user_metadata?.role || '';
+    
+    if (role !== 'professor'){
+        res.status(401).json( response.create(
+            false,
+            "User not logged with appropriate role",
+            null
+        ));
+    }
+
+    try {
+        const { data, error } = await supabase
+            .from('professors')
+            .insert([{
+                user_id: id,
+                department,
+                year
+            }])
+        .select();
+    
+        if (error) throw error;
+    
+        res.status(200).json(response.create(
+            true,
+            "Created Successfully",
+            data[0]
+        ));
+    } catch (e){
+        res.status(500).json( response.create(
+            false,
+            e.message || "Internal server error",
+            null
+        ));
+    }
 
 }
 
@@ -32,3 +78,8 @@ export function searchByInfo(req, res){
 export function searchAvailabilityById(req, res){
     
 }
+
+/**
+ * @typedef {import('../../types/ProfessorController.d.ts').CustomRequest} CustomRequest
+ * @typedef {import('../../types/RouterHandler.d.ts').CustomRouterHandler} RouterHandler
+ */

@@ -1,9 +1,10 @@
 import express from 'express';
 import { createAvailability, createProfile, deleteAvailability, deleteProfile, getAvailability, getProfile } from '../controller/ProfessorController.js';
+import { requireAuth } from '../authRequire.js';
 
 const router = express.Router();
 
-router.post('/profile', createProfile);
+router.post('/profile', requireAuth, createProfile);
 router.get('/profile', getProfile);
 router.delete('/profile', deleteProfile);
 
