@@ -20,7 +20,14 @@ export async function login(req, res){
     AuthService.setAuthCookies(res, data.session);
 
     res.json(
-        response.create(true, "Login Success", data.user)
+        response.create(true, "Login Success", {
+            id: data.user.id,
+            name: data.user.user_metadata.name,
+            email: data.user.email,
+            role: data.user.user_metadata.role,
+            created_at: data.user.created_at,
+            updated_at: data.user.updated_at
+        })
     );
 }
 
