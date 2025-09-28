@@ -173,8 +173,34 @@ export async function createAvailability(req, res){
     }
 }
 
-export function getAvailability(req, res){
+/**
+ * Returns a list of availability of the logged user
+ * 
+ * - Users logged with role 'professors' only are allowed to access this
+ * 
+ * @type {RouterHandler}
+ */
+export async function getAvailability(req, res){
+    const { id, user_metadata: { role } } = req.user;
 
+    if ( !isProfessor(res, role) ) return;
+
+    try {
+        const { data, error} = await supabase.from('availability')
+            .select('id, day_of_week, start_time, end_time')
+            .eq('user_id', id)
+        ;
+
+        if(error) throw error;
+
+        res.status(200).json( response.create(
+            true,
+            "Query Success",
+            data
+        ) )
+    } catch (e){
+        res.status(500).json( response.create(false, e.message, null) );
+    }
 }
 
 export function deleteAvailability(req, res){

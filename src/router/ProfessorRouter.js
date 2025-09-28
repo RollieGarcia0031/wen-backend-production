@@ -9,7 +9,7 @@ router.get('/profile', requireAuth, getProfile);
 router.delete('/profile', requireAuth, deleteProfile);
 
 router.post('/availability', requireAuth, createAvailability);
-router.get('/availability', getAvailability);
+router.get('/availability', requireAuth, getAvailability);
 router.delete('/availability', deleteAvailability);
 
 export default router;
