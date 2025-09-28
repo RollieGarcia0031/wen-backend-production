@@ -1,5 +1,6 @@
 import supabase from '../config/supabase.js';
 import response from '../lib/response.js';
+import { isProfessor } from '../services/ProfessorService.js';
 
 /**
  * Allows users logged as professors to create a new profile
@@ -51,7 +52,37 @@ export async function createProfile(req, res){
 
 }
 
-export function getProfile(req, res){
+/**
+ * Retrieves the saved profile of the user logged with a role of professor
+ * 
+ * @type {RouterHandler}
+ */
+export async function getProfile(req, res){
+    const { id } = req.user;
+    const role = req.user.user_metadata?.role || '';
+
+    const userIsProfessor = isProfessor(res, role);
+
+    if (!userIsProfessor) return; 
+
+    try {
+        const { data, error } = await supabase
+            .from('professors')
+            .select('department, year, id')
+            .eq('user_id', id)
+        ;
+
+        if (error) throw error;
+
+        res.status(200).json(response.create(
+            true,
+            "Retrieved Success",
+            data
+        ))
+
+    } catch (e) {
+        res.status(500).json(response.create(false, e.message, null));
+    }
 
 }
 

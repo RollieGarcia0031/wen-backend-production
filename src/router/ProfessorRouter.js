@@ -5,7 +5,7 @@ import { requireAuth } from '../authRequire.js';
 const router = express.Router();
 
 router.post('/profile', requireAuth, createProfile);
-router.get('/profile', getProfile);
+router.get('/profile', requireAuth, getProfile);
 router.delete('/profile', deleteProfile);
 
 router.post('/availability', createAvailability);
