@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/profile', requireAuth, createProfile);
 router.get('/profile', requireAuth, getProfile);
-router.delete('/profile', deleteProfile);
+router.delete('/profile', requireAuth, deleteProfile);
 
 router.post('/availability', requireAuth, createAvailability);
 router.get('/availability', getAvailability);

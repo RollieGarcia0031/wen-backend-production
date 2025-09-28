@@ -86,8 +86,48 @@ export async function getProfile(req, res){
 
 }
 
-export function deleteProfile(req, res){
+/**
+ * 
+ * Deletes a specicif profile of the logged user with a role of professor
+ * 
+ * - Only allowed to users logged with a role as a professor
+ * 
+ * @type {RouterHandler} 
+ */
+export const deleteProfile = async (req, res)=>{
+    const { id } = req.body;
+    const user_id = req.user.id;
+    const role = req.user.user_metadata?.role || '';
 
+    if ( !isProfessor(res, role) ) return;
+
+    try {
+        const { data, error } = await supabase.from('professors')
+            .delete()
+            .eq('id', id)
+            .eq('user_id', user_id)
+            .select("id")
+        ;
+
+        if (error) throw error;
+
+        if (data?.length === 0) {
+            res.status(203).json( response.create(
+                false,
+                "Nothing to remove",
+                null
+            ))
+        }
+
+        res.status(200).json( response.create(
+            true,
+            "Profile removed successfully",
+            data
+        ));
+
+    } catch (e){
+        res.status(500).json(response.create(false, e.message, null) );
+    }
 }
 
 /**
