@@ -1,6 +1,6 @@
 -- Users Table
-CREATE TABLE users (
-    id uuid PRIMARY KEY,
+CREATE TABLE public.users (
+    id uuid unique references auth.users on delete cascade,
     name VARCHAR(100) NOT NULL,
     role VARCHAR(20) CHECK (role IN ('student','professor')) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -8,7 +8,7 @@ CREATE TABLE users (
 );
 
 -- Professors Table
-CREATE TABLE professors (
+CREATE TABLE public.professors (
     id SERIAL PRIMARY KEY,
     user_id uuid REFERENCES users(id) ON DELETE CASCADE,
     department VARCHAR(100),
@@ -20,7 +20,7 @@ CREATE TABLE professors (
 -- Availability Table
 CREATE TYPE day_of_week AS ENUM ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 
-CREATE TABLE availability (
+CREATE TABLE public.availability (
     id SERIAL PRIMARY KEY,
     user_id uuid REFERENCES users(id) ON DELETE CASCADE,
     day_of_week day_of_week NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE availability (
 
 CREATE TYPE appointment_status AS ENUM ('pending', 'confirmed', 'canceled');
 
-CREATE TABLE appointments (
+CREATE TABLE public.appointments (
 id SERIAL PRIMARY KEY,
 student_id uuid REFERENCES users(id) ON DELETE CASCADE,
 professor_id uuid REFERENCES users(id) ON DELETE CASCADE,
