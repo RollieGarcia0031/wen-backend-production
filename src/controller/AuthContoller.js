@@ -31,8 +31,14 @@ export async function login(req, res){
  * @type {RouterHandler}
  */
 export async function signup(req, res){
-    const { email, password } = req.body;
-    const { data, error } = await supabase.auth.signUp({email, password});
+    const { email, password, role, name } = req.body;
+    const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+            data: { name, role }
+        }    
+    });
 
     if (error){
         return res.status(401).json(
