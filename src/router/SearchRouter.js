@@ -1,9 +1,9 @@
 import express from 'express';
-import * as Proffesor from '../controller/ProfessorController.js'
+import * as Professor from '../controller/ProfessorController.js'
 
 const SearchRouter = express.Router();
 
-SearchRouter.post('/professor', Proffesor.searchByInfo);
-SearchRouter.post('/availability', Proffesor.searchAvailabilityById);
+SearchRouter.post('/professor', Professor.searchByInfo);
+SearchRouter.post('/availability', Professor.searchAvailabilityById);
 
 export default SearchRouter;
