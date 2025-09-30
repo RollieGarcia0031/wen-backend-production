@@ -8,3 +8,14 @@ interface createProfileRequest extends Request {
     }
     user: UserResponse['data']['user'];
 }
+
+interface   searchByInfoRequest extends Request {
+    body: {
+        name: string;
+        day: string;
+        time_start: string;
+        time_end: string;
+        department: string;
+        year: int
+    }
+}

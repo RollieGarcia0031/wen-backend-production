@@ -207,7 +207,46 @@ export function deleteAvailability(req, res){
 
 }
 
-export function searchByInfo(req, res){
+/**
+ * Returns a list of professors, along with information related to their
+ * departments/course that is currently teaching
+ * 
+ * @type {RouterHandler}
+ * @param {import('../../types/ProfessorController.d.ts').searchByInfoRequest} req
+ */
+export async function searchByInfo(req, res){
+    const { day, department, name, time_end, time_start, year } = req.body;
+
+    let query = supabase
+    .from("professor_search")
+    .select("*");
+
+    if (name) query = query.ilike("name", `%${name}%`);
+    if (day) query = query.eq("availability.day_of_week", day);
+    if (time_start) query = query.lte("availability.start_time", time_start);
+    if (time_end) query = query.gte("availability.end_time", time_end);
+    if (department) query = query.eq("professors.department", department);
+    if (year) query = query.eq("professors.year", year);
+   
+    try {
+        const { data, error } = await query;
+    
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            return res.status(203).json({ message: "no users found" });
+        }
+    
+        return res.json(response.create(
+            true,
+            "Query Success",
+            data
+        ));
+
+    } catch (error) {
+        res.status(500).json( response.create(false, error?.message || "no message", null) );
+    }
+
 
 }
 
