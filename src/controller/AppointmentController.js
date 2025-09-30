@@ -11,7 +11,9 @@ import AppointmentService from "../services/AppointmentService.js";
  */
 export function send(req, res){
     const { availability_id, message, prof_id, time_stamp } = req.body;
+    const { id, user_metadata: { role } } = req.user;
 
+    
 }
 
 /**
@@ -22,9 +24,55 @@ export function send(req, res){
  * @type {RouterHandler}
  * @param {import("../../types/AppointmentController.d.ts").getListRequest} req
  */
-export function getList(req, res){
-    const { id, user_metadata: { role } } = req.body.user;
+export async function getList(req, res){
+    const { id, user_metadata: { role } } = req.user;
     
+    /**@type {import('../../types/AppointmentController.d.ts').aliasRelation} */
+    const AliasRelation = {
+        'student': 'professor:users!appointments_professor_id_fkey',
+        'professor': 'student:users!appointments_student_id_fkey'
+    }
+
+    try {
+        const { data, error } = await supabase.from('appointments')
+            .select(`
+                id,
+                status,
+                message,
+                time_stamp,
+                ${AliasRelation[role]} (
+                    name
+                ),
+                availability!appointments_availability_id_fkey (
+                    day_of_week,
+                    start_time,
+                    end_time
+                )
+            `)
+            .eq(
+                {
+                    student: 'student_id',
+                    professor: 'professor_id'
+                }[role]
+                , id
+            )
+        ;
+
+        if (error) throw error;
+
+        res.json( response.create(
+            true,
+            "Query Sucess",
+            data
+        ) )
+
+    } catch (e) {
+        res.status(500).json( response.create(
+            false,
+            e?.message || 'no message',
+            null
+        ));
+    }
 }
 
 /**

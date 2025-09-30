@@ -13,20 +13,22 @@ interface sendRequest extends Request {
         message: string;
         /** exact date of the appointment to occur */
         time_stamp: string;
-    }
+    },
+    user : User
 }
 
 
 
+interface aliasRelation {
+    [key: UserRole]: string;
+}
 interface getListRequestUser extends User {
     user_metadata: {
         role: UserRole
     }
 }
 interface getListRequest extends Request {
-    body: {
-        user: getListRequestUser;
-    }
+    user: getListRequestUser;
 }
 
 interface acceptRequest extends Request {
