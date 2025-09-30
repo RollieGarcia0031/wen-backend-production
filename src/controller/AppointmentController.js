@@ -23,7 +23,8 @@ export function send(req, res){
  * @param {import("../../types/AppointmentController.d.ts").getListRequest} req
  */
 export function getList(req, res){
-    const {} = req.body;
+    const { id, user_metadata: { role } } = req.body.user;
+    
 }
 
 /**

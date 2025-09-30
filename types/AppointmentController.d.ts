@@ -1,5 +1,7 @@
+import { User } from "@supabase/supabase-js";
 import { Request } from "express";
 import { TimeRange } from "./TimeRange";
+import { UserRole } from "./UserRole";
 
 interface sendRequest extends Request {
     body: {
@@ -14,8 +16,17 @@ interface sendRequest extends Request {
     }
 }
 
+
+
+interface getListRequestUser extends User {
+    user_metadata: {
+        role: UserRole
+    }
+}
 interface getListRequest extends Request {
-    body: null
+    body: {
+        user: getListRequestUser;
+    }
 }
 
 interface acceptRequest extends Request {

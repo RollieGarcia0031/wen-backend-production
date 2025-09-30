@@ -1,5 +1,5 @@
-import supabase from "./config/supabase";
-import response from "./lib/response";
+import supabase from "../config/supabase";
+import response from "../lib/response";
 import cookieParser from "cookie-parser";
 
 /**
@@ -42,5 +42,5 @@ export async function requireAuth(req, res, next){
 }
 
 /**
- * @typedef {import("../types/middlewareHandler").middlewareHandler} MiddlewareHandler
+ * @typedef {import("../../types/middlewareHandler").middlewareHandler} MiddlewareHandler
  */

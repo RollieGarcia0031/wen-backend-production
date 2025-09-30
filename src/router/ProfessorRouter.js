@@ -1,6 +1,6 @@
 import express from 'express';
 import { createAvailability, createProfile, deleteAvailability, deleteProfile, getAvailability, getProfile } from '../controller/ProfessorController.js';
-import { requireAuth } from '../authRequire.js';
+import { requireAuth } from '../middleware/authRequire.js';
 
 const router = express.Router();
 
