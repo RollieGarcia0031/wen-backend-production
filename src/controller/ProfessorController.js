@@ -139,7 +139,7 @@ export const deleteProfile = async (req, res)=>{
  * @type {RouterHandler} 
  */
 export async function createAvailability(req, res){
-    const { day_of_week, start, end } = req.body;
+    const { day, start, end } = req.body;
     const { id } = req.user;
     const role = req.user.user_metadata?.role || '';
 
@@ -151,7 +151,7 @@ export async function createAvailability(req, res){
         const { data, error } = await supabase.from('availability')
             .insert([{
                 user_id: id,
-                day_of_week,
+                day_of_week: day,
                 start_time: start,
                 end_time: end
             }])
