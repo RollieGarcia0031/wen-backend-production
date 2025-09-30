@@ -1,5 +1,5 @@
-import supabase from "../config/supabase";
-import response from "../lib/response";
+import supabase from "../config/supabase.js";
+import response from "../lib/response.js";
 import cookieParser from "cookie-parser";
 
 /**
