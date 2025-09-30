@@ -1,4 +1,4 @@
-import response from "../lib/response";
+import response from "../lib/response.js";
 
 
 /**
