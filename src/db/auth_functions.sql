@@ -18,7 +18,7 @@ CREATE POLICY "Users can update own user profile."
 CREATE OR REPLACE FUNCTION public.signup_handler()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.users (id, name, role)
+  INSERT INTO public.users (id, name, role, email)
   VALUES (
     NEW.id,
     NEW.raw_user_meta_data->>'name',
@@ -32,9 +32,11 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- attach the trigger function upon signup
 
-CREATE TRIGGER on_auth_user_created
+CREATE OR REPLACE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.signup_handler();
+
+-- update users table upon users table update
 
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
