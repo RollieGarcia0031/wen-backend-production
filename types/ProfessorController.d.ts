@@ -19,3 +19,9 @@ interface   searchByInfoRequest extends Request {
         year: int
     }
 }
+
+interface searchAvailabilityByIdRequest extends Request {
+    body: {
+        id: string
+    }
+}
