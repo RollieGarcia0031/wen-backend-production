@@ -237,6 +237,12 @@ export async function searchByInfo(req, res){
             return res.status(203).json({ message: "no users found" });
         }
     
+        data.forEach(x => {
+            x.prof_ids = x.prof_ids[0];
+            x.departments = x.departments[0];
+            x.years = x.years[0]
+        })
+
         return res.json(response.create(
             true,
             "Query Success",
