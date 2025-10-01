@@ -12,7 +12,7 @@ import { requireAuth } from '../middleware/authRequire.js';
 
 const AppointmentRouter = express.Router();
 
-AppointmentRouter.post('/send', send);
+AppointmentRouter.post('/send', requireAuth, send);
 AppointmentRouter.get('/list', requireAuth, getList);
 AppointmentRouter.post('/accept', accept);
 AppointmentRouter.put('/update/message', updateMessage);
