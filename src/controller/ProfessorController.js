@@ -256,8 +256,42 @@ export async function searchByInfo(req, res){
 
 }
 
-export function searchAvailabilityById(req, res){
-    
+/**
+ * Searches for a list of availabilty that a certain user has
+ * @type {RouterHandler}
+ * @param {import('../../types/ProfessorController.d.ts').searchAvailabilityByIdRequest} req
+ */
+export async function searchAvailabilityById(req, res){
+    const { id } = req.body;
+
+    try {
+        const { data, error } = await supabase
+            .from('availability')
+            .select('*')
+            .eq('user_id', id)    
+        ;
+
+        if (error) throw error;
+
+        if (!data) return res.status(203).json(
+            response.create( true, 'No availabilities found', null )
+        );
+
+        res.status(200).json(
+            response.create(true, 'Query Sucess', data)
+        );
+
+    } catch (error) {
+        res
+            .status(500)
+            .json(
+                response.create(
+                    false,
+                    error.message || 'no message',
+                    null
+                )
+            );
+    }
 }
 
 /**
