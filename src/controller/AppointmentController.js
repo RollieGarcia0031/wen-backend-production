@@ -2,6 +2,7 @@
 import response from "../lib/response.js";
 import supabase from "../config/supabase.js";
 import AppointmentService from "../services/AppointmentService.js";
+import { getRole } from "../services/UserService.js";
 
 /**
  * This can be accessed by logged user with student role to send appointments
@@ -9,11 +10,55 @@ import AppointmentService from "../services/AppointmentService.js";
  * @type { RouterHandler }
  * @param {import("../../types/AppointmentController.d.ts").sendRequest} req
  */
-export function send(req, res){
+export async function send(req, res){
     const { availability_id, message, prof_id, time_stamp } = req.body;
     const { id, user_metadata: { role } } = req.user;
 
-    
+    if (role != 'student') return res.status(403).json( response.create(
+        false,
+        "Only students can send appointments",
+        null
+    ));
+
+    try {
+        
+        const requestedTargetRole = await getRole(prof_id);
+        
+        if (requestedTargetRole == 'student') return res
+            .status(403)
+            .json( response.create(
+                false,
+                "The requested id does not have a proper role",
+                null
+            ))
+        ;
+
+        const { data, error } = await supabase.from('appointments')
+            .insert([{
+                student_id: id,
+                professor_id: prof_id,
+                availability_id,
+                message,
+                time_stamp
+            }])
+            .select()
+        ;
+
+        if (error) throw error;
+        
+        res.status(201).json( response.create(
+            true,
+            "Query Sucess",
+            data
+        ));
+
+    } catch (error) {
+        res.status(500).json( response.create(
+            false,
+            error?.message || 'no message',
+            null
+        ))        
+    }
 }
 
 /**
