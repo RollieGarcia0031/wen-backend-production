@@ -295,6 +295,48 @@ export async function searchAvailabilityById(req, res){
 }
 
 /**
+ * Searches for a user name, email, and profiles of a user logged as professor
+ * 
+ * This route will be used by student users to search for a profile of a certain professor
+ * @type {RouterHandler}
+ * @param {import('../../types/ProfessorController.d.ts').searchByIdRequest} req
+ */
+export async function searchById(req, res){
+    const { id } = req.body;
+
+    try {
+
+        const { data, error } = await supabase
+            .from('users')
+            .select(`
+                name,
+                email,
+                professors (
+                    department,
+                    year
+                )
+            `)
+            .eq('id', id)
+        ;
+
+        if (error) throw error;
+
+        res.json( response.create(
+            true,
+            "Query Success",
+            data
+        ));
+        
+    } catch (error) {
+        res.status(500).json( response.create(
+            false,
+            error?.message || "no message",
+            null
+        ) )
+    }
+}
+
+/**
  * @typedef {import('../../types/ProfessorController.d.ts').CustomRequest} CustomRequest
  * @typedef {import('../../types/RouterHandler.d.ts').CustomRouterHandler} RouterHandler
  */

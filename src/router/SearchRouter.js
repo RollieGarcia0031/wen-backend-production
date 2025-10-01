@@ -5,5 +5,6 @@ const SearchRouter = express.Router();
 
 SearchRouter.post('/professor', Professor.searchByInfo);
 SearchRouter.post('/availability', Professor.searchAvailabilityById);
+SearchRouter.post('/professor/info', Professor.searchById);
 
 export default SearchRouter;

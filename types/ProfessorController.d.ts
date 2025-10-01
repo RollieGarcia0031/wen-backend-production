@@ -25,3 +25,9 @@ interface searchAvailabilityByIdRequest extends Request {
         id: string
     }
 }
+
+interface searchByIdRequest extends Request {
+    body: {
+        id: string;
+    }
+}
