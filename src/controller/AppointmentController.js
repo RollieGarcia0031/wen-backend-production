@@ -74,8 +74,8 @@ export async function getList(req, res){
     
     /**@type {import('../../types/AppointmentController.d.ts').aliasRelation} */
     const AliasRelation = {
-        'student': 'professor:users!appointments_professor_id_fkey',
-        'professor': 'student:users!appointments_student_id_fkey'
+        'student': 'name:users!appointments_professor_id_fkey',
+        'professor': 'name:users!appointments_student_id_fkey'
     }
 
     try {
@@ -105,10 +105,15 @@ export async function getList(req, res){
 
         if (error) throw error;
 
+        const reformattedData = AppointmentService.reformatGetListSQLResponse(data); 
+        console.log(reformattedData);
         res.json( response.create(
             true,
             "Query Sucess",
-            data
+            {
+                role,
+                appointments: reformattedData
+            } 
         ) )
 
     } catch (e) {
