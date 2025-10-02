@@ -21,6 +21,28 @@ export default class {
     static async getCountByFilter(timeRange, status, user_id, role){
 
     }
+
+    /**
+     * Reformats the object response from the sql query from
+     * 
+     * @param { GetListRawSQLResponse[] } data - raw data response from sql operation
+     */
+    static reformatGetListSQLResponse(data){
+         const formattedData = data.map((info)=> {
+            return {
+                appointments_id: info['id'],
+                status: info.status,
+                message: info.message,
+                time_stamp: info.time_stamp,
+                name: info.name.name,
+                day_of_week: info.availability.day_of_week,
+                start_time: info.availability.start_time,
+                end_time: info.availability.end_time
+            }       
+        })
+
+        return formattedData;
+    }
 }
 
 /**
