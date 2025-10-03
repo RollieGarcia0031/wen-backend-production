@@ -53,6 +53,7 @@ interface deleteByIdRequest extends Request {
         /** id of the appointment to be deleted */
         id: string;
     }
+    user: User
 }
 
 interface getCurrentlyBookedRequest extends Request {

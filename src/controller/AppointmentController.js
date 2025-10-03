@@ -206,8 +206,44 @@ export function updateMessage(req, res){
  * @type {RouterHandler}
  * @param {import("../../types/AppointmentController.d.ts").deleteByIdRequest} req
  */
-export function deleteById(req, res){
-    const { id } = req.body;
+export async function deleteById(req, res){
+    const appointment_id = req.body.id;
+    const { id, user_metadata: { role } } = req.user;
+
+    const query = supabase
+        .from('appointments')
+        .delete()
+        .eq('id',appointment_id)
+    ;
+
+    if (role == 'professor')  query.eq('professor_id', id);
+    if (role == 'student')    query.eq('student_id', id);  
+
+    try {
+        const { data, error } = await query.select(); 
+        
+        if (error) throw error;
+
+        if (data?.length === 0) return res.status(203)
+            .json(response.create(
+                false,
+                "No appointment was deleted",
+                null
+        ));
+
+        res.status(200).json( response.create(
+            true,
+            "Appointment Deleted",
+            data
+        ));
+
+    } catch (error) {
+        res.status(500).json(response.create(
+            false,
+            error?.message || "no message",
+            null
+        ))
+    }
 }
 
 /**
