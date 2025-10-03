@@ -30,7 +30,7 @@ export default class {
     static reformatGetListSQLResponse(data){
          const formattedData = data.map((info)=> {
             return {
-                appointments_id: info['id'],
+                appointment_id: info['id'],
                 status: info.status,
                 message: info.message,
                 time_stamp: info.time_stamp,
