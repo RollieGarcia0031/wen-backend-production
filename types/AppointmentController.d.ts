@@ -36,6 +36,7 @@ interface acceptRequest extends Request {
         /** id of the appointment to be accepted */
         id: string
     }
+    user : User
 }
 
 interface updateMessageRequest extends Request {

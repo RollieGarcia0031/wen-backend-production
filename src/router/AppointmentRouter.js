@@ -14,7 +14,7 @@ const AppointmentRouter = express.Router();
 
 AppointmentRouter.post('/send', requireAuth, send);
 AppointmentRouter.get('/list', requireAuth, getList);
-AppointmentRouter.post('/accept', accept);
+AppointmentRouter.post('/accept', requireAuth, accept);
 AppointmentRouter.put('/update/message', updateMessage);
 AppointmentRouter.delete('/delete', deleteById);
 AppointmentRouter.get('/currentDayBooked', getCurrentlyBooked);

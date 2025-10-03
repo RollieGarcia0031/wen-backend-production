@@ -131,8 +131,56 @@ export async function getList(req, res){
  * @type {RouterHandler}
  * @param {import("../../types/AppointmentController.d.ts").acceptRequest} req
  */
-export function accept(req, res) {
+export async function accept(req, res) {
     const { id } = req.body;
+    const user_id = req.user.id;
+
+    /** @type {import("../../types/UserRole.js").UserRole} */
+    const user_role = req.user.user_metadata.role;
+
+    if (user_role === 'student') return res
+        .status(403)
+        .json(response.create(
+            false,
+            "User's logged as students are not allowed",
+            null
+        ))
+    ;
+
+    try {
+        const { data, error } = await supabase
+            .from('appointments')
+            .update({
+                status: 'confirmed'
+            })
+            .eq('id', id)
+            .select()
+        ;
+
+        if (error) throw error;
+
+        if (data.length === 0)return res.status(203)
+            .json(response.create(
+                false,
+                "No rows updated",
+                null
+            )
+        );
+
+        res.status(200).json(response.create(
+            true,
+            "Updated",
+            data
+        ));
+
+    } catch (error){
+        res.status(500).json(response.create(
+            false,
+            error?.message || "no message",
+            null
+        ));
+    }
+
 }
 
 /**
