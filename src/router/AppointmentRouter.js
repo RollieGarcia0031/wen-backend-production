@@ -16,7 +16,7 @@ AppointmentRouter.post('/send', requireAuth, send);
 AppointmentRouter.get('/list', requireAuth, getList);
 AppointmentRouter.post('/accept', requireAuth, accept);
 AppointmentRouter.put('/update/message', updateMessage);
-AppointmentRouter.delete('/delete', deleteById);
+AppointmentRouter.delete('/delete', requireAuth, deleteById);
 AppointmentRouter.get('/currentDayBooked', getCurrentlyBooked);
 AppointmentRouter.post('/groupedCount', getCountByTimeRange);
 
