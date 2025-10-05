@@ -193,8 +193,48 @@ export async function accept(req, res) {
  * @type {RouterHandler}
  * @param {import("../../types/AppointmentController.d.ts").updateMessageRequest} req
  */
-export function updateMessage(req, res){
+export async function updateMessage(req, res){
     const { id, message } = req.body;
+    const user_id = req.user.id;
+    const role = req.user.user_metadata.role;
+
+    if (role == 'professor') return res.status(401)
+        .json( response.create(
+            false,
+            "Only students are allowed",
+            null
+        ))
+    ;
+
+    try {
+        const { data, error } = await supabase
+            .from('appointments')
+            .update({ message })
+            .eq('id', id)
+            .eq('student_id', user_id)
+            .select();
+        ;
+
+        if (error) throw error;
+
+        if (data.length === 0)return res.status(203)
+            .json( response.create(
+                false,
+                "No updates occurred",
+                null
+            ))
+        ;
+
+        res.status(200).json(response.create(
+            true,
+            "Updated",
+            data
+        ));
+
+    } catch (error) {
+        res.status(500)
+            .json( response.create(false, error.message, null));
+    }
 
 }
 
@@ -257,7 +297,7 @@ export async function deleteById(req, res){
  * @param {import("../../types/AppointmentController.d.ts").getCurrentlyBookedRequest} req
  */
 export async function getCurrentlyBooked(req, res){
-    const {} = req.body;
+    const {  } = req.body;
 
     const list = await
         AppointmentService.getFilteredList('today','confirmed');

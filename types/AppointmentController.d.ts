@@ -46,6 +46,7 @@ interface updateMessageRequest extends Request {
         /** id of the appointment to be edited */
         id: string;
     }
+    user: User
 }
 
 interface deleteByIdRequest extends Request {
