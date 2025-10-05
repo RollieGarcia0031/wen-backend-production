@@ -12,14 +12,14 @@ export default class {
         res.cookie('access_token', session.access_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: 'None',
             maxAge: 1000 * 60 * 60 // 1h
         })
 
         res.cookie('refresh_token', session.refresh_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: 'None',
             maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
         })
     }
