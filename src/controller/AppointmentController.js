@@ -299,6 +299,26 @@ export async function deleteById(req, res){
 export async function getCurrentlyBooked(req, res){
     const { id, user_metadata: { role } } = req.user;
     
+    try {
+        const { data, error } = await supabase.rpc('get_todays_confirmed_appointments', {
+            user_uuid: id,
+            user_role: role
+        })
+
+        if (error) throw error;
+
+        res.status(200).json(response.create(
+            true,
+            "Query Success",
+            data
+        ));
+
+    } catch (error) {
+        res.status(500).json(response.create(
+            false, error.message || "no message", null
+        ))
+    }
+
 }
 
 /**
