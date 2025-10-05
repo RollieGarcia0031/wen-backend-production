@@ -1,3 +1,5 @@
+import supabase from '../config/supabase.js';
+
 export default class {
     
     /**
@@ -8,13 +10,20 @@ export default class {
      * @param {UserRole}                   role
     */
     static async getFilteredList(timeRange='today', status='pending', user_id, role='professor'){
-
+        const query = supabase.from('appointments');
+        if (timeRange === 'today') query
+            .select(
+                'time_stamp',
+                new Date().toISOString().split('T')[0],
+            )
+            .lt();
+        ;
     }
 
     /**
      * returns the data about counts of appointment assigned to/from a user
      * @param {TimeRange | null}    timeRange 
-     * @param {AppointmentStatus}       status 
+     * @param {AppointmentStatus}   status 
      * @param {string}              user_id 
      * @param {UserRole}            role 
      */
@@ -46,7 +55,7 @@ export default class {
 }
 
 /**
- * @typedef {import('../types/TimeRange.d.ts').TimeRange} TimeRange
- * @typedef {import('../types/AppointmentStatus.d.ts').AppointmentStatus} AppointmentStatus
- * @typedef {import('../types/UserRole.d.ts').UserRole} UserRole
+ * @typedef {import('../../types/TimeRange.d.ts').TimeRange} TimeRange
+ * @typedef {import('../../types/AppointmentStatus.d.ts').AppointmentStatus} AppointmentStatus
+ * @typedef {import('../../types/UserRole.d.ts').UserRole} UserRole
  */
