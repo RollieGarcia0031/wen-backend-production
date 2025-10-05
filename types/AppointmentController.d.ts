@@ -59,10 +59,12 @@ interface deleteByIdRequest extends Request {
 
 interface getCurrentlyBookedRequest extends Request {
     body: null;
+    user: User;
 }
 
 interface getCountByTimeRangeRequest extends Request {
     body: {
         time_range: TimeRange
     }
+    user: User
 }

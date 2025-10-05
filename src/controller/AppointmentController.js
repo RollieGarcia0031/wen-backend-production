@@ -297,10 +297,7 @@ export async function deleteById(req, res){
  * @param {import("../../types/AppointmentController.d.ts").getCurrentlyBookedRequest} req
  */
 export async function getCurrentlyBooked(req, res){
-    const {  } = req.body;
-
-    const list = await
-        AppointmentService.getFilteredList('today','confirmed');
+    const { id, user_metadata: { role } } = req.user;
     
 }
 
@@ -315,9 +312,49 @@ export async function getCurrentlyBooked(req, res){
  */
 export async function getCountByTimeRange(req, res){
     const { time_range } = req.body;
+    const userId = req.user.id;
+    const role = req.user.user_metadata.role;
 
-    const list = await
-        AppointmentService.getCountByFilter(time_range, null)
+    let new_time_range = '';
+    let startDate = '';
+
+    if (time_range === 'tomorrow') {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        startDate = tomorrow.toISOString().split('T')[0];
+        new_time_range = '1 day'
+    } else if (time_range == 'today') {
+        new_time_range = '1 day';
+        startDate = new Date().toISOString().split('T')[0];
+    } else if (time_range == 'future') {
+        startDate = new Date().toISOString().split('T')[0];
+        new_time_range = '10 years';
+    } else if (time_range == 'past') {
+        startDate = '2000-01-01';
+        new_time_range = '100 years';
+    }
+    
+    try {
+        const { data, error } = await supabase.rpc('get_appointments_count', {
+            user_uuid: userId,
+            user_role: role,
+            start_date: startDate,
+            time_range: new_time_range,
+        });
+
+        if (error) throw error;
+
+        res.status(200).json(response.create(
+            true,
+            "Query Success",
+            data
+        ));
+
+    } catch (error) {
+        res.status(500).json(response.create(
+            false, error.message || "no message", null
+        ));
+    }
 }
 
 /** @typedef {import("../../types/RouterHandler").CustomRouterHandler} RouterHandler */

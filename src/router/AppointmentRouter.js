@@ -18,6 +18,6 @@ AppointmentRouter.post('/accept', requireAuth, accept);
 AppointmentRouter.put('/update/message', requireAuth, updateMessage);
 AppointmentRouter.delete('/delete', requireAuth, deleteById);
 AppointmentRouter.get('/currentDayBooked', requireAuth, getCurrentlyBooked);
-AppointmentRouter.post('/groupedCount', getCountByTimeRange);
+AppointmentRouter.post('/groupedCount', requireAuth, getCountByTimeRange);
 
 export default AppointmentRouter;
